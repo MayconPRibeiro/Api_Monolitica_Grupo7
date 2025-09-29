@@ -7,7 +7,7 @@ class ProfessorController:
 
     @staticmethod
     def criar(data):
-        novo = Professor(nome=data['nome'], disciplina=data.get('disciplina'))
+        novo = Professor(nome=data['nome'], idade=data.get('idade'), materia=data.get('materia'), observacoes=data.get('observacoes'))
         db.session.add(novo)
         db.session.commit()
         return novo
@@ -16,7 +16,9 @@ class ProfessorController:
     def atualizar(professor_id, data):
         professor = Professor.query.get_or_404(professor_id)
         professor.nome = data.get('nome', professor.nome)
-        professor.disciplina = data.get('disciplina', professor.disciplina)
+        professor.idade = data.get('idade', professor.idadei)
+        professor.materia = data.get('materia', professor.materia)
+        professor.observacoes = data.get('observacoes', professor.observacoes)
         db.session.commit()
         return professor
 
