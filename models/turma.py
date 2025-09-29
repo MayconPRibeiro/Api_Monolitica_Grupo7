@@ -1,16 +1,18 @@
-from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
-from sqlalchemy.orm import relationship
-from sqlalchemy.ext.declarative import declarative_base
+from app import db
+from sqlalchemy import ForeignKey
 
-Base = declarative_base()
+class Turma(db.Model):
+    __tablename__ = "turma"
 
-class Turma(Base):
-    __tablename__ = 'turmas'
+    id = db.Column(db.Integer, primary_key=True)
+    descricao = db.Column(db.String(100), nullable=True)
+    professor_id = db.Column(db.Integer, ForeignKey('professores.id'))
+    ativo = db.Column(db.Boolean, nullable=False)
 
-    id = Column(Integer, primary_key=True)
-    descricao = Column(String(100))
-    professor_id = Column(Integer, ForeignKey('professores.id'))
-    ativo = Column(Boolean)
+    professor = db.relationship(
+        "Professor", 
+        back_populates="turmas"
+    )
 
-    professor = relationship("Professor", back_populates="turmas")
-    alunos = relationship("Aluno", back_populates="turma", cascade="all, delete-orphan")
+    def __repr__(self):
+        return f"<Turma {self.descricao}>"
