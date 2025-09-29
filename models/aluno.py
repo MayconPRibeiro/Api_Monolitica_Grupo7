@@ -1,21 +1,17 @@
-from sqlalchemy import Column, Integer, String, Float, Date, ForeignKey
-from sqlalchemy.orm import relationship
-from sqlalchemy.ext.declarative import declarative_base
+from app import db
 
-Base = declarative_base()
-
-class Aluno(Base):
+class Aluno(db.Model):
     __tablename__ = 'alunos'
 
-    id = Column(Integer, primary_key=True)
-    nome = Column(String(100))
-    idade = Column(Integer)
-    turma_id = Column(Integer, ForeignKey('turmas.id'))
-    data_nascimento = Column(Date)
-    nota_primeiro_semestre = Column(Float)
-    nota_segundo_semestre = Column(Float)
-    media_final = Column(Float)
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(100))
+    idade = db.Column(db.Integer)
+    turma_id = db.Column(db.Integer, db.ForeignKey('turmas.id'))
+    data_nascimento = db.Column(db.Date)
+    nota_primeiro_semestre = db.Column(db.Float)
+    nota_segundo_semestre = db.Column(db.Float)
+    media_final = db.Column(db.Float)
 
-    turma = relationship("Turma", back_populates="alunos")
+    turma = db.relationship("Turma", back_populates="alunos")
 
     
