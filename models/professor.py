@@ -7,7 +7,7 @@ class Professor(db.Model):
     nome = db.Column(db.String(100), nullable=False)
     idade = db.Column(db.Integer, nullable=False)
     materia = db.Column(db.String(100), nullable=False)
-    observacoes = db.Column(db.Text, nullabre=True)
+    observacoes = db.Column(db.Text, nullable=True)
 
     # Relacionamento (um professor pode ter várias turmas)
     turmas = db.relationship(
