@@ -4,6 +4,9 @@ class ProfessorController:
     @staticmethod
     def listar():
         return Professor.query.all()
+    
+    def consultar_professor(professor_id):
+        return Professor.query.filter_by(id=professor_id).first()
 
     @staticmethod
     def criar(data):
