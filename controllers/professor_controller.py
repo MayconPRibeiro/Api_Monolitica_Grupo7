@@ -19,7 +19,7 @@ class ProfessorController:
     def atualizar(professor_id, data):
         professor = Professor.query.get_or_404(professor_id)
         professor.nome = data.get('nome', professor.nome)
-        professor.idade = data.get('idade', professor.idadei)
+        professor.idade = data.get('idade', professor.idade)
         professor.materia = data.get('materia', professor.materia)
         professor.observacoes = data.get('observacoes', professor.observacoes)
         db.session.commit()

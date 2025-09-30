@@ -20,3 +20,15 @@ def criar_turma():
     
     else:
        return jsonify([{'msg' : 'Professor não encontrado'}]), 400
+    
+@turma_bp.route('/<int:id>', methods=['PUT'])
+def atualizar_turma(id):
+    data = request.get_json()
+    turma = TurmaController.atualizar(id, data)
+    return jsonify({'id': turma.id, 'descricao': turma.nome, 'professor_id': turma.professor_id, 'ativo': turma.ativo})
+
+
+@turma_bp.route('/<int:id>', methods=['DELETE'])
+def deletar_turma(id):
+    TurmaController.deletar(id)
+    return jsonify({'message': 'Turma deletada'})
