@@ -15,6 +15,18 @@ class AlunoController:
     @staticmethod
     def atualizar(aluno_id, data):
         aluno = Aluno.query.get_or_404(aluno_id)
+        aluno.nome = data.get('nome', aluno.nome)
+        aluno.idade = data.get('idade', aluno.idade)
+        db.session.commit()
+        return aluno
+    
+    @staticmethod
+    def deletar(aluno_id):
+        aluno = Aluno.query.get_or_404(aluno_id)
+        db.session.delete(aluno)
+        db.session.commit()
+        return {}
+    
         
     
 
