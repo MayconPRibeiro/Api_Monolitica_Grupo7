@@ -2,12 +2,14 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_swagger_ui import get_swaggerui_blueprint
+from flasgger import Swagger
 
 db = SQLAlchemy()
 ma = Marshmallow()
 
 def create_app():
     app = Flask(__name__)
+    swagger = Swagger(app)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///meubanco.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 

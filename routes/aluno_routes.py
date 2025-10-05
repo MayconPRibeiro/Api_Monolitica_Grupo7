@@ -5,6 +5,44 @@ aluno_bp = Blueprint ('alunos', __name__, url_prefix='/alunos')
 
 @aluno_bp.route('/alunos', methods=['GET'])
 def listar_alunos():
+    """
+    Listar todos os alunos
+    ---
+    tags:
+      - Alunos
+    responses:
+      200:
+        description: Retorna a lista de alunos cadastrados
+        schema:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+              nome:
+                type: string
+                example: "Maria Silva"
+              idade:
+                type: integer
+                example: 20
+              turma_id:
+                type: integer
+                example: 3
+              data_nascimento:
+                type: string
+                example: "2005-03-14"
+              nota_primeiro_semestre:
+                type: number
+                example: 8.5
+              nota_segundo_semestre:
+                type: number
+                example: 9.0
+              media_final:
+                type: number
+                example: 8.75
+    """
     alunos = AlunoController.listar()
     return jsonify([
         {
@@ -22,6 +60,52 @@ def listar_alunos():
 
 @aluno_bp.route('/alunos', methods=['POST'])
 def criar_aluno():
+    """
+    Criar um novo aluno
+    ---
+    tags:
+      - Alunos
+    parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          type: object
+          required:
+            - nome
+            - idade
+          properties:
+            nome:
+              type: string
+              example: "Ronaldo Cavalcante"
+            idade:
+              type: integer
+              example: 22
+            turma_id:
+              type: integer
+              example: 1
+            data_nascimento:
+              type: string
+              example: "2003-10-05"
+            nota_primeiro_semestre:
+              type: number
+              example: 8.0
+            nota_segundo_semestre:
+              type: number
+              example: 9.0
+    responses:
+      201:
+        description: Aluno criado com sucesso
+        schema:
+          type: object
+          properties:
+            mensagem:
+              type: string
+              example: "Aluno criado com sucesso!"
+            id:
+              type: integer
+              example: 1
+    """
     data = request.get_json()
     if not data or 'nome' not in data or 'idade' not in data:
         return jsonify({'erro': 'Campos obrigatórios: nome e idade'}), 400
@@ -36,6 +120,42 @@ def criar_aluno():
 
 @aluno_bp.route('/alunos/<int:aluno_id>', methods=['PUT'])
 def atualizar_aluno(aluno_id):
+    """
+    Atualizar dados de um aluno existente
+    ---
+    tags:
+      - Alunos
+    parameters:
+      - in: path
+        name: aluno_id
+        required: true
+        type: integer
+        description: ID do aluno a ser atualizado
+      - in: body
+        name: body
+        required: true
+        schema:
+          type: object
+          properties:
+            nome:
+              type: string
+              example: "Ronaldo Atualizado"
+            idade:
+              type: integer
+              example: 23
+    responses:
+      200:
+        description: Aluno atualizado com sucesso
+        schema:
+          type: object
+          properties:
+            mensagem:
+              type: string
+              example: "Aluno atualizado com sucesso!"
+            id:
+              type: integer
+              example: 1
+    """
     data = request.get_json()
     aluno_atualizado = AlunoController.atualizar(aluno_id, data)
     return jsonify({
@@ -47,6 +167,27 @@ def atualizar_aluno(aluno_id):
 
 @aluno_bp.route('/alunos/<int:aluno_id>', methods=['DELETE'])
 def deletar_aluno(aluno_id):
+    """
+    Deletar um aluno pelo ID
+    ---
+    tags:
+      - Alunos
+    parameters:
+      - in: path
+        name: aluno_id
+        required: true
+        type: integer
+        description: ID do aluno a ser removido
+    responses:
+      200:
+        description: Aluno deletado com sucesso
+        schema:
+          type: object
+          properties:
+            mensagem:
+              type: string
+              example: "Aluno deletado com sucesso!"
+    """
     AlunoController.deletar(aluno_id)
     return jsonify({'mensagem': 'Aluno deletado com sucesso!'}), 200
 
