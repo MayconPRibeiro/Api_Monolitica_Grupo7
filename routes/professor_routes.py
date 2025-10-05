@@ -18,9 +18,15 @@ def criar_professor():
 def atualizar_professor(id):
     data = request.get_json()
     professor = ProfessorController.atualizar(id, data)
+
+    if not professor:
+        return jsonify({'error': 'Professor não encontrado'}), 404
+
     return jsonify({'id': professor.id, 'nome': professor.nome, 'idade': professor.idade, 'materia': professor.materia, 'observacoes': professor.observacoes})
 
 @professor_bp.route('/<int:id>', methods=['DELETE'])
 def deletar_professor(id):
-    ProfessorController.deletar(id)
+    professor = ProfessorController.deletar(id)
+    if not professor:
+        return jsonify({'error': 'Professor não encontrado'}), 404
     return jsonify({'message': 'Professor deletado'})

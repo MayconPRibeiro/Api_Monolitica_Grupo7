@@ -7,7 +7,7 @@ class Turma(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     descricao = db.Column(db.String(100), nullable=True)
     professor_id = db.Column(db.Integer, ForeignKey('professores.id'))
-    ativo = db.Column(db.Boolean, nullable=False)
+    ativo = db.Column(db.Boolean, nullable=False, default=True)
 
     professor = db.relationship(
         "Professor", 
