@@ -6,6 +6,7 @@ class ProfessorController:
     def listar():
         return Professor.query.all()
     
+    @staticmethod
     def consultar_professor(professor_id):
         return Professor.query.filter_by(id=professor_id).first()
 

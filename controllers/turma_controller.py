@@ -6,6 +6,7 @@ class TurmaController:
     def listar_turmas():
         return Turma.query.all()
     
+    @staticmethod
     def consultar_turma(turma_id):
         return Turma.query.filter_by(id=turma_id).first()
     

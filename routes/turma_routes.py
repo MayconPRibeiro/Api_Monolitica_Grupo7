@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from controllers.turma_controller import TurmaController
-from controllers.professor_controller import consultar_professor
+from controllers.professor_controller import ProfessorController
 
 turma_bp = Blueprint('turma', __name__, url_prefix='/turma')
 
@@ -86,7 +86,7 @@ def criar_turma():
               example: "Professor não encontrado"
     """
     data = request.get_json()
-    professor = consultar_professor(data.get("professor_id"))
+    professor = ProfessorController.consultar_professor(data.get("professor_id"))
 
     if professor:  
       turma = TurmaController.criar(data)  
