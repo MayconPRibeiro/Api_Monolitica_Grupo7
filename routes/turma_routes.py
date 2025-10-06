@@ -39,55 +39,53 @@ def criar_turma():
     ---
     tags:
       - Turmas
-    requestBody:
-      required: true
-      content:
-        application/json:
-          schema:
-            type: object
-            required:
-              - descricao
-              - professor_id
-            properties:
-              descricao:
-                type: string
-                example: "Turma B - 2º Ano"
-              professor_id:
-                type: integer
-                example: 3
-              ativo:
-                type: boolean
-                example: true
+    consumes:
+      - application/json
+    parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          type: object
+          required:
+            - descricao
+            - professor_id
+          properties:
+            descricao:
+              type: string
+              example: "Turma B - 2º Ano"
+            professor_id:
+              type: integer
+              example: 3
+            ativo:
+              type: boolean
+              example: true
     responses:
       201:
         description: Turma criada com sucesso
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                id:
-                  type: integer
-                  example: 2
-                descricao:
-                  type: string
-                  example: "Turma B - 2º Ano"
-                professor_id:
-                  type: integer
-                  example: 3
-                ativo:
-                  type: boolean
-                  example: true
+        schema:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 2
+            descricao:
+              type: string
+              example: "Turma B - 2º Ano"
+            professor_id:
+              type: integer
+              example: 3
+            ativo:
+              type: boolean
+              example: true
       400:
         description: Professor não encontrado
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                msg:
-                  type: string
-                  example: "Professor não encontrado"
+        schema:
+          type: object
+          properties:
+            msg:
+              type: string
+              example: "Professor não encontrado"
     """
     data = request.get_json()
     professor = ProfessorController.consultar_professor(data.get("professor_id"))
