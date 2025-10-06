@@ -1,13 +1,7 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_marshmallow import Marshmallow
 from flasgger import Swagger
 
-from routes.aluno_routes import aluno_bp  # ajuste o path conforme seu projeto
-from routes.professor_routes import professor_bp
-
-db = SQLAlchemy()
-ma = Marshmallow()
+from config import db, ma
 
 def create_app():
     app = Flask(__name__)
@@ -29,12 +23,14 @@ def create_app():
         db.create_all()
 
     # Registrar rotas
-    from routes import register_routes
-    register_routes(app)
+    from routes.aluno_routes import aluno_bp
+    from routes.professor_routes import professor_bp
+    from routes.turma_routes import turma_bp
 
 
     app.register_blueprint(aluno_bp)
     app.register_blueprint(professor_bp)
+    app.register_blueprint(turma_bp)
 
     return app
 

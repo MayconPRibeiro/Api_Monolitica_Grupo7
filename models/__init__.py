@@ -1,4 +1,4 @@
-from .professor import Professor
+from config import db
 from .aluno import Aluno
+from .professor import Professor
 from .turma import Turma
-from app import db

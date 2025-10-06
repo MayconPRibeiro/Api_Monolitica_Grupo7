@@ -1,4 +1,5 @@
-from models import Professor, db
+from models import Professor
+from ..config import db
 
 class ProfessorController:
     @staticmethod

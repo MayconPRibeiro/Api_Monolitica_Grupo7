@@ -1,4 +1,5 @@
-from models import Turma, db
+from models import Turma
+from ..config import db
 
 class TurmaController:
     @staticmethod

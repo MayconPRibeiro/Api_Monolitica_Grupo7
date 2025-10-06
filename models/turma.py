@@ -1,4 +1,4 @@
-from app import db
+from config import db
 from sqlalchemy import ForeignKey
 
 class Turma(db.Model):
@@ -6,7 +6,7 @@ class Turma(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     descricao = db.Column(db.String(100), nullable=True)
-    professor_id = db.Column(db.Integer, ForeignKey('professores.id'))
+    professor_id = db.Column(db.Integer, db.ForeignKey('professores.id'))
     ativo = db.Column(db.Boolean, nullable=False, default=True)
 
     professor = db.relationship(
