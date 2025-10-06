@@ -1,14 +1,21 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
-from flask_swagger_ui import get_swaggerui_blueprint
 from flasgger import Swagger
+
+from routes.aluno_routes import aluno_bp  # ajuste o path conforme seu projeto
+from routes.professor_routes import professor_bp
 
 db = SQLAlchemy()
 ma = Marshmallow()
 
 def create_app():
     app = Flask(__name__)
+    app.config['SWAGGER'] = {
+        'title': 'Minha API Escolar',
+        'uiversion': 3,
+        'openapi': '3.0.2'
+    }
     swagger = Swagger(app)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///meubanco.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -25,11 +32,9 @@ def create_app():
     from routes import register_routes
     register_routes(app)
 
-    # Swagger
-    SWAGGER_URL = '/api/docs'
-    API_URL = '/static/swagger.yaml'
-    swaggerui_blueprint = get_swaggerui_blueprint(SWAGGER_URL, API_URL, config={'app_name': "Flask MVC API"})
-    app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
+
+    app.register_blueprint(aluno_bp)
+    app.register_blueprint(professor_bp)
 
     return app
 
