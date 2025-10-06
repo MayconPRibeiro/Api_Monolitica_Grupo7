@@ -2,7 +2,7 @@ from config import db
 from sqlalchemy import ForeignKey
 
 class Turma(db.Model):
-    __tablename__ = "turma"
+    __tablename__ = "turmas"
 
     id = db.Column(db.Integer, primary_key=True)
     descricao = db.Column(db.String(100), nullable=True)
@@ -12,6 +12,12 @@ class Turma(db.Model):
     professor = db.relationship(
         "Professor", 
         back_populates="turmas"
+    )
+
+    alunos = db.relationship(
+        "Aluno", 
+        back_populates="turma", 
+        cascade="all, delete-orphan"
     )
 
     def __repr__(self):

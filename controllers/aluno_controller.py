@@ -1,5 +1,5 @@
 from models import Aluno
-from ..config import db
+from config import db
 
 class AlunoController:
     @staticmethod

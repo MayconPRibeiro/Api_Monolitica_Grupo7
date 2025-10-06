@@ -1,5 +1,5 @@
 from models import Professor
-from ..config import db
+from config import db
 
 class ProfessorController:
     @staticmethod
