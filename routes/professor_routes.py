@@ -89,9 +89,20 @@ def criar_professor():
               type: string
               example: "Professora especialista em história moderna"
     """
-    data = request.get_json(silent=True) or request.form.to_dict()
-    professor = ProfessorController.criar(data)
-    return jsonify({'id': professor.id, 'nome': professor.nome, 'idade': professor.idade, 'materia': professor.materia, 'observacoes': professor.observacoes}), 201
+    data = request.get_json()  # só JSON, sem fallback para form
+    if not data:
+        return jsonify({'erro': 'Nenhum dado enviado ou JSON mal formatado'}), 400
+    try:
+        professor = ProfessorController.criar(data)
+    except ValueError as e:
+        return jsonify({'erro': str(e)}), 400
+    return jsonify({
+        'id': professor.id,
+        'nome': professor.nome,
+        'idade': professor.idade,
+        'materia': professor.materia,
+        'observacoes': professor.observacoes
+    }), 201
 
 @professor_bp.route('/<int:id>', methods=['PUT'])
 def atualizar_professor(id):

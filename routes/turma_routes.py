@@ -29,7 +29,7 @@ def listar_turmas():
                 type: boolean
                 example: true
     """
-  turmas = TurmaController.listar()
+  turmas = TurmaController.listar_turmas()
   return jsonify([{'id': t.id, 'descricao': t.descricao, 'ativo': t.ativo} for t in turmas])
 
 @turma_bp.route('/', methods=['POST'])

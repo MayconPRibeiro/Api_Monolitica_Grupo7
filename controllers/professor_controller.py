@@ -12,7 +12,16 @@ class ProfessorController:
 
     @staticmethod
     def criar(data):
-        novo = Professor(nome=data['nome'], idade=data.get('idade'), materia=data.get('materia'), observacoes=data.get('observacoes'))
+        for campo in ['nome', 'idade', 'materia']:
+            if campo not in data:
+                raise ValueError(f"Campo obrigatório {campo} ausente")
+
+        novo = Professor(
+            nome=data['nome'],
+            idade=int(data['idade']),
+            materia=data['materia'],
+            observacoes=data.get('observacoes')
+        )
         db.session.add(novo)
         db.session.commit()
         return novo

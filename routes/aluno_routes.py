@@ -3,7 +3,7 @@ from controllers.aluno_controller import AlunoController
 
 aluno_bp = Blueprint ('alunos', __name__, url_prefix='/alunos')
 
-@aluno_bp.route('/alunos', methods=['GET'])
+@aluno_bp.route('/', methods=['GET'])
 def listar_alunos():
     """
     Listar todos os alunos
@@ -58,7 +58,7 @@ def listar_alunos():
         for aluno in alunos
     ]), 200
 
-@aluno_bp.route('/alunos', methods=['POST'])
+@aluno_bp.route('/', methods=['POST'])
 def criar_aluno():
     """
     Cria um novo aluno
@@ -123,7 +123,7 @@ def criar_aluno():
         'idade': novo_aluno.idade
     }), 201
 
-@aluno_bp.route('/alunos/<int:aluno_id>', methods=['PUT'])
+@aluno_bp.route('/<int:aluno_id>', methods=['PUT'])
 def atualizar_aluno(aluno_id):
     """
     Atualizar dados de um aluno existente
@@ -170,7 +170,7 @@ def atualizar_aluno(aluno_id):
         'idade': aluno_atualizado.idade
     }), 200
 
-@aluno_bp.route('/alunos/<int:aluno_id>', methods=['DELETE'])
+@aluno_bp.route('/<int:aluno_id>', methods=['DELETE'])
 def deletar_aluno(aluno_id):
     """
     Deletar um aluno pelo ID
