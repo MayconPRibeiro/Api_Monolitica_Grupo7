@@ -1,5 +1,6 @@
 from models import Turma
 from config import db
+from werkzeug.exceptions import NotFound
 
 class TurmaController:
     @staticmethod
@@ -19,7 +20,9 @@ class TurmaController:
     
     @staticmethod
     def atualizar(turma_id, data):
-        turma = Turma.query.get_or_404(turma_id)
+        turma = Turma.query.get(turma_id)
+        if not turma:
+            return None
         turma.descricao = data.get('descricao', turma.descricao)
         turma.professor_id = data.get('professor_id', turma.professor_id)
         turma.ativo = data.get('ativo', turma.ativo)
@@ -28,7 +31,9 @@ class TurmaController:
     
     @staticmethod
     def deletar(turma_id):
-        turma = Turma.query.get_or_404(turma_id)
+        turma = Turma.query.get(turma_id)  # <-- get() em vez de get_or_404
+        if not turma:
+            return None
         db.session.delete(turma)
         db.session.commit()
-        return {}
+        return turma
