@@ -89,7 +89,7 @@ def criar_professor():
               type: string
               example: "Professora especialista em história moderna"
     """
-    data = request.get_json()
+    data = request.get_json(silent=True) or request.form.to_dict()
     professor = ProfessorController.criar(data)
     return jsonify({'id': professor.id, 'nome': professor.nome, 'idade': professor.idade, 'materia': professor.materia, 'observacoes': professor.observacoes}), 201
 
@@ -154,7 +154,7 @@ def atualizar_professor(id):
               type: string
               example: "Professor não encontrado"
     """
-    data = request.get_json()
+    data = request.get_json(silent=True) or request.form.to_dict()
     professor = ProfessorController.atualizar(id, data)
 
     if not professor:

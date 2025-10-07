@@ -35,67 +35,44 @@ def listar_turmas():
 @turma_bp.route('/', methods=['POST'])
 def criar_turma():
     """
-    Criar uma nova turma
+    Cria uma nova turma
     ---
     tags:
       - Turmas
     consumes:
       - application/json
     parameters:
-      - in: body
-        name: body
+      - name: body
+        in: body
         required: true
         schema:
           type: object
-          required:
-            - descricao
-            - professor_id
           properties:
             descricao:
               type: string
-              example: "Turma B - 2º Ano"
+              example: "Turma de Python Avançado"
             professor_id:
               type: integer
-              example: 3
-            ativo:
-              type: boolean
-              example: true
+              example: 1
     responses:
       201:
         description: Turma criada com sucesso
-        schema:
-          type: object
-          properties:
-            id:
-              type: integer
-              example: 2
-            descricao:
-              type: string
-              example: "Turma B - 2º Ano"
-            professor_id:
-              type: integer
-              example: 3
-            ativo:
-              type: boolean
-              example: true
       400:
         description: Professor não encontrado
-        schema:
-          type: object
-          properties:
-            msg:
-              type: string
-              example: "Professor não encontrado"
     """
-    data = request.get_json()
+    data = request.get_json(silent=True) or request.form.to_dict()
     professor = ProfessorController.consultar_professor(data.get("professor_id"))
 
     if professor:  
-      turma = TurmaController.criar(data)  
-      return jsonify([{'id': turma.id, 'descricao': turma.descricao, 'professor_id': turma.professor_id, 'ativo': turma.ativo}]), 201
-    
+        turma = TurmaController.criar(data)
+        return jsonify([{
+            'id': turma.id,
+            'descricao': turma.descricao,
+            'professor_id': turma.professor_id,
+            'ativo': turma.ativo
+        }]), 201
     else:
-       return jsonify([{'msg' : 'Professor não encontrado'}]), 400
+        return jsonify([{'msg': 'Professor não encontrado'}]), 400
     
 @turma_bp.route('/<int:id>', methods=['PUT'])
 def atualizar_turma(id):
@@ -152,7 +129,7 @@ def atualizar_turma(id):
               type: string
               example: "Turma não encontrada"
     """
-    data = request.get_json()
+    data = request.get_json(silent=True) or request.form.to_dict()
     turma = TurmaController.atualizar(id, data)
 
     if not turma:

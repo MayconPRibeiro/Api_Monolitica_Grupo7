@@ -61,10 +61,12 @@ def listar_alunos():
 @aluno_bp.route('/alunos', methods=['POST'])
 def criar_aluno():
     """
-    Criar um novo aluno
+    Cria um novo aluno
     ---
     tags:
       - Alunos
+    consumes:
+      - application/json
     parameters:
       - in: body
         name: body
@@ -81,36 +83,39 @@ def criar_aluno():
             idade:
               type: integer
               example: 22
-            turma_id:
-              type: integer
-              example: 1
             data_nascimento:
               type: string
               example: "2003-10-05"
             nota_primeiro_semestre:
               type: number
-              example: 8.0
+              example: 8
             nota_segundo_semestre:
               type: number
-              example: 9.0
+              example: 9
+            turma_id:
+              type: integer
+              example: 1
     responses:
       201:
         description: Aluno criado com sucesso
-        schema:
-          type: object
-          properties:
-            mensagem:
-              type: string
-              example: "Aluno criado com sucesso!"
-            id:
-              type: integer
-              example: 1
+      400:
+        description: Campos obrigatórios ausentes
     """
-    data = request.get_json()
+    data = request.get_json(silent=True) or request.form.to_dict()
+    
     if not data or 'nome' not in data or 'idade' not in data:
         return jsonify({'erro': 'Campos obrigatórios: nome e idade'}), 400
 
-    novo_aluno = AlunoController.criar(data)
+    # Passando todos os campos opcionais
+    novo_aluno = AlunoController.criar({
+        'nome': data['nome'],
+        'idade': data['idade'],
+        'data_nascimento': data.get('data_nascimento'),
+        'nota_primeiro_semestre': data.get('nota_primeiro_semestre'),
+        'nota_segundo_semestre': data.get('nota_segundo_semestre'),
+        'turma_id': data.get('turma_id')
+    })
+
     return jsonify({
         'mensagem': 'Aluno criado com sucesso!',
         'id': novo_aluno.id,
@@ -156,7 +161,7 @@ def atualizar_aluno(aluno_id):
               type: integer
               example: 1
     """
-    data = request.get_json()
+    data = request.get_json(silent=True) or request.form.to_dict()
     aluno_atualizado = AlunoController.atualizar(aluno_id, data)
     return jsonify({
         'mensagem': 'Aluno atualizado com sucesso!',
